@@ -1,0 +1,281 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "landpay-api",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://landpay-server.staging.chigisoft.co"
+    },
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/auth/register": {
+      "post": {
+        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "Kolby22@gmail.com",
+                "password": "9AHKE0gMYxthDqy",
+                "firstName": "Brett",
+                "lastName": "Stark"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "firstName": {
+                              "type": "string"
+                            },
+                            "lastName": {
+                              "type": "string"
+                            },
+                            "emailVerifiedAt": {}
+                          }
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "user": {
+                      "id": "17994568-4783-4555-acc8-dbd568d0e745",
+                      "email": "kolby22@gmail.com",
+                      "firstName": "Brett",
+                      "lastName": "Stark",
+                      "emailVerifiedAt": null
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNzk5NDU2OC00NzgzLTQ1NTUtYWNjOC1kYmQ1NjhkMGU3NDUiLCJmbGFnIjoiZW1haWxfdmVyaWZpY2F0aW9uIiwiY291bnRlciI6ImNrc29makFsc2xOcEFOdmNZMnJaYUE0R3Q1WVJlZ3IwZGZ6USIsImlhdCI6MTczNDYyMDQ3MSwiZXhwIjoxNzM3MjEyNDcxfQ.GBoSLoQVwBzm4YVzLy0VVghvyx3f8Q_DWLlJI6YljXU"
+                  },
+                  "message": "success"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/login": {
+      "post": {
+        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "Kolby22@gmail.com",
+                "password": "9AHKE0gMYxthDqy"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "firstName": {
+                              "type": "string"
+                            },
+                            "lastName": {
+                              "type": "string"
+                            },
+                            "emailVerifiedAt": {}
+                          }
+                        },
+                        "token": {
+                          "type": "string"
+                        },
+                        "tokenExpiresOn": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "user": {
+                      "id": "17994568-4783-4555-acc8-dbd568d0e745",
+                      "email": "kolby22@gmail.com",
+                      "firstName": "Brett",
+                      "lastName": "Stark",
+                      "emailVerifiedAt": null
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNzk5NDU2OC00NzgzLTQ1NTUtYWNjOC1kYmQ1NjhkMGU3NDUiLCJmbGFnIjoiYXV0aCIsImNvdW50ZXIiOiJtakptckpiRTVQZXBMM1hHUE1mdGZkMXVCeUc3aFpvdmprcU4iLCJpYXQiOjE3MzQ2MjA0NzIsImV4cCI6MTczNzIxMjQ3Mn0.2uXCE7kjQK_e9AMwSu8_KbFqGOMQNmC4twwkrLQIQgo",
+                    "tokenExpiresOn": "2025-01-18T15:01:12.000Z"
+                  },
+                  "message": "success"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/user": {
+      "get": {
+        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "emailVerifiedAt": {}
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": "17994568-4783-4555-acc8-dbd568d0e745",
+                    "email": "kolby22@gmail.com",
+                    "firstName": "Brett",
+                    "lastName": "Stark",
+                    "emailVerifiedAt": null
+                  },
+                  "message": "success"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
