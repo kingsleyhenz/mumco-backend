@@ -17,4 +17,4 @@ ENV PORT=80
 
 EXPOSE 80
 
-CMD ["node", "./build/server.js"]
+CMD ["node", "./build/src/server.js"]
