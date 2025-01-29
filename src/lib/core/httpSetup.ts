@@ -1,6 +1,7 @@
 import { ClassConstructor } from 'class-transformer';
 import { RequestHandler, Response, Router } from 'express';
 import { PageData, wrapServiceAction } from '../utils';
+import { ServerResponse } from 'http';
 
 interface Route {
   method: 'get' | 'post' | 'put' | 'patch' | 'delete';
@@ -57,7 +58,11 @@ export function addRoute(route: Route) {
       // eslint-disable-next-line
       const [_, r] = args;
       const res = r as Response;
-      const result: { data: any; pageData?: PageData; message: string } = await originalMethod.apply(this, args);
+      const result: { data: any; pageData?: PageData; message: string } | ServerResponse = await originalMethod.apply(this, args);
+      // don't send response again if a response is returned to avoid Converting circular structure to JSON error
+      if (result instanceof ServerResponse) {
+        return;
+      }
       res.send(result);
     };
 

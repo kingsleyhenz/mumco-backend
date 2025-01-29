@@ -9,7 +9,6 @@ export default class TrController {
   async createTr(req: Request, res: Response) {
     const result = await TrService.createTr(req.body);
 
-    console.log('result', result);
     return sr(result)
   }
 }
