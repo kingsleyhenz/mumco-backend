@@ -104,7 +104,7 @@ export const validateConfig = (options?: { exceptions?: string[] }) => {
   Object.entries(config).forEach(([baseKey, baseValue]) => {
     Object.entries(baseValue).forEach(([key, value]) => {
       if (
-        (value === "" || value === undefined) &&
+        (value === "" || value === undefined || Number.isNaN(value)) &&
         !options?.exceptions?.includes(`${baseKey}.${key}`)
       ) {
         missingKeys.push(`${baseKey}.${key}`);
