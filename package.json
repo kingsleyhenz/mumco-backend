@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env APP_ENV=local nodemon ./src/server.ts",
-    "build": "rimraf ./build && tsc && cp -R src/lib/mail build/src/lib",
+    "build": "rimraf ./build && tsc && cpx \"src/lib/mail/**/*\" build/src/lib",
     "test": "cross-env NODE_ENV=test APP_ENV=test mocha -r ts-node/register",
     "prettier": "prettier --ignore-path .gitignore --write .",
     "lint": "eslint . --ext .ts --fix",
@@ -78,6 +78,7 @@
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.59.1",
     "chai": "^4.3.4",
+    "cpx": "^1.5.0",
     "eslint": "^8.0.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.8.0",
