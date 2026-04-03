@@ -1,5 +1,6 @@
 import { type Response, type NextFunction } from 'express';
 import { omit } from 'lodash';
+import { UserRole } from '@prisma/client';
 
 import { AuthenticationError } from '../../lib/errors';
 import * as utils from '../../lib/utils';
@@ -34,6 +35,11 @@ export default (tokenFlag = TokenFlag.AUTH) =>
       const session = await redis.get(`sessions:${userId as string}:${counter as string}`);
       if (user == null || (tokenFlag === TokenFlag.AUTH && !session)) {
         next(new AuthenticationError('token is invalid'));
+        return;
+      }
+
+      if (user.role !== UserRole.ADMIN) {
+        next(new AuthenticationError('you are not authorized to access this endpoint'));
         return;
       }
 

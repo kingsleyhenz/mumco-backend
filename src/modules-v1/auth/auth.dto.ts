@@ -1,19 +1,10 @@
-/* eslint-disable max-classes-per-file */
-import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsString, MinLength } from 'class-validator';
 
-import { IsEmail, IsEmail as IsStrictEmail, TransformToLowerCase } from '../../lib/validators';
-import { EmailPasswordDto, UserIdDto } from '../../lib/validators/global';
-
-export class RegisterDto {
-  @IsStrictEmail()
-  @TransformToLowerCase()
-  email: string;
-
+export class LoginDto {
   @IsString()
-  firstName: string;
-
-  @IsString()
-  lastName: string;
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim().toLowerCase() : value))
+  identifier: string;
 
   @IsString()
   @MinLength(6, {
@@ -21,28 +12,3 @@ export class RegisterDto {
   })
   password: string;
 }
-
-export class ProfileDto extends UserIdDto {
-}
-
-export class ProfileUpdateDto extends UserIdDto {
-  @IsString()
-  @IsOptional()
-  firstName?: string;
-
-  @IsString()
-  @IsOptional()
-  lastName?: string;
-}
-
-export class VerifyEmailDto {
-  @IsEmail()
-  @TransformToLowerCase()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  token: string;
-}
-
-export class LoginDto extends EmailPasswordDto {}

@@ -24,6 +24,14 @@ export default class UserRepo {
     });
   };
 
+  public static getUserByEmailOrUsername = async (identifier: string) => {
+    return prisma.user.findFirst({
+      where: {
+        OR: [{ email: identifier }, { username: identifier }],
+      },
+    });
+  };
+
   public static createUser = async (data: Prisma.UserCreateInput) => {
     return prisma.user.create({
       data,

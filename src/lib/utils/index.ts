@@ -70,8 +70,8 @@ export function wrapServiceAction<T, V extends (args: any) => any>(params: {
   handler: V;
 }): (...funcArgs: Parameters<V>) => Promise<ReturnType<V>> {
   return async (...args: Parameters<V>): Promise<ReturnType<V>> => {
-    const transformed = <Record<string, never>>plainToInstance<T, unknown>(params.schema, args[0]);
-    const errors = await validate(transformed, {
+    const transformed = plainToInstance<T, unknown>(params.schema, args[0]) as T;
+    const errors = await validate(transformed as object, {
       whitelist: true,
       forbidNonWhitelisted: true,
       validationError: { target: false },
@@ -80,7 +80,8 @@ export function wrapServiceAction<T, V extends (args: any) => any>(params: {
       const cErrors = getErrorObject(errors);
       throw new ValidationError(cErrors);
     }
-    return params.handler(transformed);
+    const handler = params.handler as (dto: T, ...rest: unknown[]) => ReturnType<V>;
+    return handler(transformed as T, ...args.slice(1)) as ReturnType<V>;
   };
 }
 

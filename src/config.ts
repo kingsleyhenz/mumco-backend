@@ -42,17 +42,17 @@ interface Config {
     username?: string;
     tls?: "yes" | "no";
   };
+  cloudinary: {
+    cloudName: string;
+    apiKey: string;
+    apiSecret: string;
+    folder: string;
+  };
+  /** Optional; mail module still expects these keys to exist. */
   sendgrid: {
     apiKey: string;
     from: string;
   };
-  // s3: {
-  //   endpoint: string;
-  //   accessKey: string;
-  //   secretKey: string;
-  //   bucket: string;
-  //   region: string;
-  // };
 }
 
 const isTestEnvironment = process.env.APP_ENV === AppEnvironmentEnum.TEST;
@@ -86,9 +86,15 @@ const config: Config = {
     username: process.env.REDIS_USERNAME,
     tls: process.env.REDIS_TLS as "yes" | "no" | undefined,
   },
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME!,
+    apiKey: process.env.CLOUDINARY_API_KEY!,
+    apiSecret: process.env.CLOUDINARY_API_SECRET!,
+    folder: process.env.CLOUDINARY_FOLDER || 'momco/events',
+  },
   sendgrid: {
-    apiKey: process.env.SENDGRID_API_KEY!,
-    from: process.env.SENDGRID_EMAIL_FROM!,
+    apiKey: process.env.SENDGRID_API_KEY ?? '',
+    from: process.env.SENDGRID_EMAIL_FROM ?? '',
   },
   // s3: {
   //   endpoint: process.env.S3_ENDPOINT!,
@@ -120,7 +126,13 @@ export const validateConfig = (options?: { exceptions?: string[] }) => {
 };
 
 validateConfig({
-  exceptions: ["redis.username", "redis.tls", "s3.endpoint"],
+  exceptions: [
+    'redis.username',
+    'redis.tls',
+    's3.endpoint',
+    'sendgrid.apiKey',
+    'sendgrid.from',
+  ],
 });
 
 export default config;
