@@ -56,6 +56,9 @@ export default class EventsService {
       throw new NotFoundError(ErrorMessages.ITEM_NOT_FOUND.replace('%k', 'event'));
     }
 
+    // Delete all associated media from Cloudinary before removing the DB record
+    await cloudinary.deleteFiles(existingEvent.images, existingEvent.videos);
+
     await EventRepo.deleteEventById(dto.eventId);
     return { id: dto.eventId };
   }

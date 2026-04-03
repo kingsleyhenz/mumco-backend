@@ -82,7 +82,7 @@ const config: Config = {
     mode: process.env.REDIS_MODE! || "standalone",
     host: process.env.REDIS_HOST!,
     port: +process.env.REDIS_PORT!,
-    password: process.env.REDIS_PASSWORD!,
+    password: process.env.REDIS_PASSWORD || '',
     username: process.env.REDIS_USERNAME,
     tls: process.env.REDIS_TLS as "yes" | "no" | undefined,
   },

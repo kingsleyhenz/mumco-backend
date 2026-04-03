@@ -27,6 +27,46 @@ const uploadFile = (file: Express.Multer.File, folder?: string) =>
     uploadStream.end(file.buffer);
   });
 
+/**
+ * Extracts the Cloudinary public_id from a secure URL.
+ * e.g. https://res.cloudinary.com/<cloud>/image/upload/v123/folder/filename.jpg
+ *   => folder/filename
+ */
+const extractPublicId = (url: string): string => {
+  // Remove query params if any
+  const cleanUrl = url.split('?')[0];
+  // Match everything after /upload/v<version>/ or /upload/
+  const match = cleanUrl.match(/\/upload\/(?:v\d+\/)?(.+)$/);
+  if (!match) return '';
+  // Strip file extension
+  return match[1].replace(/\.[^/.]+$/, '');
+};
+
+/**
+ * Deletes a list of Cloudinary assets by their secure URLs.
+ * Handles both images and videos in separate batch calls.
+ */
+const deleteFiles = async (
+  imageUrls: string[] = [],
+  videoUrls: string[] = [],
+): Promise<void> => {
+  const imagePublicIds = imageUrls.map(extractPublicId).filter(Boolean);
+  const videoPublicIds = videoUrls.map(extractPublicId).filter(Boolean);
+
+  const tasks: Promise<unknown>[] = [];
+
+  if (imagePublicIds.length > 0) {
+    tasks.push(cloudinary.api.delete_resources(imagePublicIds, { resource_type: 'image' }));
+  }
+
+  if (videoPublicIds.length > 0) {
+    tasks.push(cloudinary.api.delete_resources(videoPublicIds, { resource_type: 'video' }));
+  }
+
+  await Promise.all(tasks);
+};
+
 export default {
   uploadFile,
+  deleteFiles,
 };
